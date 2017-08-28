@@ -26,9 +26,9 @@ gem 'we-call'
 # config/initializers/we-call.rb
 
 We::Call.configure do |config|
-  config.app_name = 'service-a'
-  config.app_env = 'staging'
-  config.detect_deprecations = false
+  config.app_name = 'service-a'       # default nil (Connection class falls back to APP_NAME or Rails name)
+  config.app_env = 'staging'          # default nil (Connection class back to RACK_ENV || RAILS_ENV)
+  config.detect_deprecations = false  # default true
 end
 ```
 
@@ -152,6 +152,7 @@ _For now this gem requires Rails 4.2+ due to some ActiveController functionality
 
 ## TODO
 
+- [ ] Support adding href to Deprecate to make a `Link` with rel=sunset as per Sunset RFC draft 03
 - [ ] Remove Rails as a dependency (soft requirement on `ActiveSupport::Deprecated` is fine)
 - [ ] Split DetectDeprecations into standalone `faraday-sunset` gem
 - [ ] Pass Trace IDs along
@@ -175,7 +176,7 @@ References: [Blog Post](https://rossta.net/blog/how-to-specify-local-ruby-gems-i
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at [wework/we-call](https://github.com/wework/we-call).
+Bug reports and pull requests are welcome on GitHub at [wework/we-call](https://github.com/wework/we-call). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 [coveralls-image]:https://coveralls.io/repos/github/wework/we-call/badge.svg?branch=master
