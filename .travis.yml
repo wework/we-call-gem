@@ -1,0 +1,25 @@
+language: ruby
+before_install:
+  - gem install bundler
+before_script:
+  - appraisal install
+script:
+  - bundle exec appraisal rspec
+gemfiles:
+  - faraday_0.9.gemfile
+  - faraday_0.10.gemfile
+  - faraday_0.11.gemfile
+  - faraday_0.12.gemfile
+  - faraday_0.13.gemfile
+  - rails_4.2.gemfile
+  - rails_5.0.gemfile
+  - rails_5.1.gemfile
+rvm:
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
+  - ruby-head
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+  fast_finish: true

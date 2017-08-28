@@ -1,0 +1,12 @@
+/.bundle/
+/.idea
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/gemfiles/
+/pkg/
+/spec/reports/
+/tmp/
+.byebug_history
