@@ -3,22 +3,22 @@ require "ruby_decorators"
 module We
   module Call
     class Deprecated < RubyDecorator
-      @@methods = {}
+      class << self
+        private def methods
+          @methods ||= {}
+        end
+      end
 
       def initialize(date:)
         @date = date
       end
 
       def set(method, value)
-        @@methods[method] = value
+        self.class.methods[method] = value
       end
 
       def self.get(method)
-        @@methods[method]
-      end
-
-      def self.methods
-        @@methods
+        methods[method]
       end
 
       # Called when annotation is used
