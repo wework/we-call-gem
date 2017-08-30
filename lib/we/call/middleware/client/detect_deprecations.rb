@@ -42,13 +42,21 @@ module We
             else
               warning = "Endpoint #{env.url} was deprecated for removal on #{datetime.iso8601} and could be removed AT ANY TIME"
             end
+            send_warning warning
+          end
 
+          def send_warning(warning)
+            warned = false
             if @options[:active_support]
               ActiveSupport::Deprecation.warn(warning)
-            elsif @options[:logger] && @options[:logger].respond_to?(:warn)
+              warned = true
+            end
+            if @options[:logger] && @options[:logger].respond_to?(:warn)
               @options[:logger].warn(warning)
-            else
-              raise NoOutputForWarning, "Pass active_support: true or logger: SomeLoggerWithWriteMethod when registering middleware"
+              warned = true
+            end
+            unless warned
+              raise NoOutputForWarning, "Pass active_support: true, or logger: ::Logger.new when registering middleware"
             end
           end
         end

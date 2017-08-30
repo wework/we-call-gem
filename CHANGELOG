@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+### Changed
+- Switched `config.detect_deprecations` from bool to expect `:active_support` or logger instance
+
+## v0.5.0
+
 ### Added
 - Configurable `We::Call.configure` which accepts a config block
 - Config option `config.app_name` to avoid providing `app:` in every connection initializer

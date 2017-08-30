@@ -43,8 +43,8 @@ RSpec.describe We::Call::Configuration do
   end
 
   describe "#detect_deprecations" do
-    it "default value is true" do
-      expect(subject.detect_deprecations).to be true
+    it "default value is :active_support" do
+      expect(subject.detect_deprecations).to be :active_support
     end
   end
 

@@ -9,7 +9,7 @@ module We
       def initialize
         @app_env_header = 'X-App-Env'
         @app_name_header = 'X-App-Name'
-        @detect_deprecations = true
+        @detect_deprecations = :active_support
       end
     end
   end
