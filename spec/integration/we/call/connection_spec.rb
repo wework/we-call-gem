@@ -46,7 +46,7 @@ RSpec.describe We::Call::Connection do
       end
 
       it 'should have the default adapter' do
-        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, We::Call::Middleware::Client::DetectDeprecations)
+        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe We::Call::Connection do
       end
 
       it 'only has Faraday.default_adapter adapter handler' do
-        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, We::Call::Middleware::Client::DetectDeprecations)
+        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe We::Call::Connection do
       end
 
       it 'only has NetHttpPersistent adapter handler' do
-        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttpPersistent, We::Call::Middleware::Client::DetectDeprecations)
+        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttpPersistent, Faraday::Sunset)
       end
     end
   end

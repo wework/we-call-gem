@@ -19,10 +19,10 @@ Gem::Specification.new do |spec|
   end
   spec.bindir               = "bin"
   spec.require_paths        = ["lib"]
-  spec.metadata["yard.run"] = "yri"
 
   spec.add_dependency "faraday", ">= 0.9.0", "< 0.14"
   spec.add_dependency "faraday_middleware", '~> 0'
+  spec.add_dependency "faraday-sunset", "~> 0.1.0"
   spec.add_dependency "ruby_decorators", '~> 0.0'
   spec.add_dependency "rails", ">= 4.2"
 
@@ -33,7 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "simplecov", '~> 0.15'
   spec.add_development_dependency "hashie", "~> 3.5"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "yard"
   spec.add_development_dependency "vcr", '~> 3'
 end

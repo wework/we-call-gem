@@ -119,7 +119,7 @@ RSpec.describe We::Call::Connection do
         end
 
         it 'should have the default adapter' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, We::Call::Middleware::Client::DetectDeprecations)
+          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
         end
       end
 
@@ -131,7 +131,7 @@ RSpec.describe We::Call::Connection do
         end
 
         it 'only has Faraday.default_adapter adapter handler' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, We::Call::Middleware::Client::DetectDeprecations)
+          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
         end
       end
 
@@ -143,7 +143,7 @@ RSpec.describe We::Call::Connection do
         end
 
         it 'only has NetHttpPersistent adapter handler' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttpPersistent, We::Call::Middleware::Client::DetectDeprecations)
+          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttpPersistent, Faraday::Sunset)
         end
       end
 
@@ -158,7 +158,7 @@ RSpec.describe We::Call::Connection do
           it 'register middleware with { active_support: true }' do
             subject
             expect(builder_spy).to have_received(:response).with(
-              :detect_deprecations,
+              :sunset,
               active_support: true
             )
           end
@@ -179,7 +179,7 @@ RSpec.describe We::Call::Connection do
           it 'register middleware with { logger: logger }' do
             subject
             expect(builder_spy).to have_received(:response).with(
-              :detect_deprecations,
+              :sunset,
               logger: logger
             )
           end

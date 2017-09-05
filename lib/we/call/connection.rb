@@ -1,11 +1,9 @@
 require 'faraday'
-require 'faraday_middleware'
+require 'faraday-sunset'
 
 module We
   module Call
     module Connection
-      Faraday::Response.register_middleware detect_deprecations: We::Call::Middleware::Client::DetectDeprecations
-
       extend self
 
       OPEN_TIMEOUT = 2
@@ -59,7 +57,7 @@ module We
           faraday.options[:open_timeout] = open_timeout
 
           if config.detect_deprecations
-            faraday.response :detect_deprecations, setup_deprecation_reporting(faraday)
+            faraday.response :sunset, setup_sunset_middleware(faraday)
           end
 
           yield faraday if block_given?
@@ -88,7 +86,7 @@ module We
         raise MissingOpenTimeout, 'open_timeout must be set, and defaults to 1 second. This is the time until a connection is established with another server, and after 1 sec it\'s probably not there.'
       end
 
-      def setup_deprecation_reporting(faraday)
+      def setup_sunset_middleware(faraday)
         # In v0.5.0 this was a bool switch, now it takes :active_support or an instance of a Logger
         if config.detect_deprecations == true || config.detect_deprecations == :active_support
           return { active_support: true }
