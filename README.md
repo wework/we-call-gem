@@ -6,7 +6,9 @@
 
 ![Call me Maybe](https://cloud.githubusercontent.com/assets/67381/25590846/0c3145ea-2e80-11e7-9166-76448e0134a8.jpeg)
 
-Requires metadata and offers client/server middleware for making HTTP requests, tracking calls, raising deprecations, supporting trace IDs, throttling, etc.
+Requires metadata and offers client/server middleware to help debug HTTP calls, raise warnings for deprecations, supporting trace IDs, etc.
+
+It aims to arm API developers and users with tools to make their calls more robust, and enforces Good Ideas™ with sane defaults whenever possible.
 
 ## Goals
 

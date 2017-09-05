@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["WeWork Engineering"]
   spec.email         = ["engineering@wework.com"]
 
-  spec.summary       = "Making healthy happy HTTP calls"
+  spec.summary       = "Making healthy, happy HTTP calls"
   spec.description   = "Handles conventions of making calls to other services, with required metadata for tracking calls between services, deprecations of endpoints, trace IDs, throttling, etc."
   spec.homepage      = "https://github.com/wework/we-call-gem"
   spec.licenses      = ['MIT']
