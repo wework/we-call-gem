@@ -6,7 +6,9 @@
 
 ![Call me Maybe](https://cloud.githubusercontent.com/assets/67381/25590846/0c3145ea-2e80-11e7-9166-76448e0134a8.jpeg)
 
-Requires metadata and offers client/server middleware for making HTTP requests, tracking calls, raising deprecations, supporting trace IDs, throttling, etc.
+Requires metadata and offers client/server middleware to help debug HTTP calls, raise warnings for deprecations, supporting trace IDs, etc.
+
+It aims to arm API developers and users with tools to make their calls more robust, and enforces Good Ideas™ with sane defaults whenever possible.
 
 ## Goals
 
@@ -154,9 +156,11 @@ _For now this gem requires Rails 4.2+ due to some ActiveController functionality
 
 - [ ] Support adding href to Deprecate to make a `Link` with rel=sunset as per Sunset RFC draft 03
 - [ ] Remove Rails as a dependency (soft requirement on `ActiveSupport::Deprecated` is fine)
-- [ ] Split DetectDeprecations into standalone `faraday-sunset` gem
+- [x] Split DetectDeprecations into standalone [faraday-sunset] gem
 - [ ] Pass Trace IDs along
 - [ ] Work on sane defaults for retries and error raising
+
+[faraday-sunset]: https://github.com/philsturgeon/faraday-sunset
 
 ## Testing
 
@@ -182,8 +186,8 @@ Bug reports and pull requests are welcome on GitHub at [wework/we-call](https://
 [coveralls-image]:https://coveralls.io/repos/github/wework/we-call/badge.svg?branch=master
 [coveralls-url]:https://coveralls.io/github/wework/we-call?branch=master
 
-[travis-url]:https://travis-ci.org/wework/we-js-logger
-[travis-image]: https://travis-ci.org/wework/we-js-logger.svg?branch=master
+[travis-url]:https://travis-ci.org/wework/we-call
+[travis-image]: https://travis-ci.org/wework/we-call.svg?branch=master
 
 [license-url]: LICENSE
 [license-image]: http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
