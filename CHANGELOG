@@ -5,15 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
-
-### Changed
-- Switched `config.detect_deprecations` from bool to expect `:active_support` or logger instance
-
 ## v0.5.1
 
 ### Changed
 
+- Switched `config.detect_deprecations` from bool to expect `:active_support` or logger instance
 - Moved `We::Call::Middleware::Client::DetectDeprecations` into its own [faraday-sunset] gem (no BC breaks)
 
 [faraday-sunset]: https://github.com/philsturgeon/faraday-sunset
