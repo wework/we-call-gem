@@ -4,7 +4,7 @@ module We
   module Call
     class Deprecated < RubyDecorator
       class << self
-        private def methods
+        def methods
           @methods ||= {}
         end
       end
