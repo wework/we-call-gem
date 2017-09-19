@@ -148,7 +148,7 @@ Easy! Check your logs for `user_agent=service-name; app_name=service-name;` The 
 
 - **Ruby:** v2.2 - v2.4
 - **Rails:** v4.2 - v5.1
-- **Faraday:** v0.8 - v0.13
+- **Faraday:** v0.9 - v0.13
 
 _For now this gem requires Rails 4.2+ due to some ActiveController functionality we are taking advantage of. Future work will include making this purely rack based._
 

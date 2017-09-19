@@ -1,3 +1,5 @@
+require "ruby_decorators"
+
 module We
   module Call
     module Annotations
