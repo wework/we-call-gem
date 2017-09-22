@@ -100,14 +100,17 @@ module We
       # @return [String] Environment (usually 'development', 'staging', 'production', etc.)
       def guess_env
         return config.app_env if config.app_env
-        ENV['RAILS_ENV'] || ENV['RACK_ENV']
+        ENV['RACK_ENV'] || rails_app_env
       end
 
       # @return [String] Check for config.app_name, or detect name from Rails application
       def guess_app
         return config.app_name if config.app_name
-        return ENV['APP_NAME'] if ENV['APP_NAME']
-        rails_app_name
+        ENV['APP_NAME'] || rails_app_name
+      end
+
+      def rails_app_env
+        ::Rails.env if (defined? ::Rails)
       end
 
       def rails_app_name
