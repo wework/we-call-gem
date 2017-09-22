@@ -183,11 +183,11 @@ References: [Blog Post](https://rossta.net/blog/how-to-specify-local-ruby-gems-i
 Bug reports and pull requests are welcome on GitHub at [wework/we-call](https://github.com/wework/we-call). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
-[coveralls-image]:https://coveralls.io/repos/github/wework/we-call/badge.svg?branch=master
-[coveralls-url]:https://coveralls.io/github/wework/we-call?branch=master
+[coveralls-image]:https://coveralls.io/repos/github/wework/we-call-gem/badge.svg?branch=master
+[coveralls-url]:https://coveralls.io/github/wework/we-call-gem?branch=master
 
-[travis-url]:https://travis-ci.org/wework/we-call
-[travis-image]: https://travis-ci.org/wework/we-call.svg?branch=master
+[travis-url]:https://travis-ci.org/wework/we-call-gem
+[travis-image]: https://travis-ci.org/wework/we-call-gem.svg?branch=master
 
 [license-url]: LICENSE
 [license-image]: http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
