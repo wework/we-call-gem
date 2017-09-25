@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.5.4
+
+### Fixed
+- Connection checks `Rails.env` instead of `ENV['RAILS_ENV']` as most people dont have RAILS_ENV in their `.env` file
+
 ## v0.5.3
 
 ### Fixed
