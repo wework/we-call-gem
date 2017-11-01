@@ -38,40 +38,4 @@ RSpec.describe We::Call::Connection do
       end
     end
   end
-
-  context 'adapter configuration' do
-    context 'when no adapter is specified' do
-      subject do
-        described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5)
-      end
-
-      it 'should have the default adapter' do
-        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
-      end
-    end
-
-    context 'when default adapter is specified' do
-      subject do
-        described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5) do |conn|
-          conn.adapter Faraday.default_adapter
-        end
-      end
-
-      it 'only has Faraday.default_adapter adapter handler' do
-        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
-      end
-    end
-
-    context 'when :net_http_persistent adapter is specified' do
-      subject do
-        described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5) do |conn|
-          conn.adapter :net_http_persistent
-        end
-      end
-
-      it 'only has NetHttpPersistent adapter handler' do
-        expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttpPersistent, Faraday::Sunset)
-      end
-    end
-  end
 end
