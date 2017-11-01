@@ -1,5 +1,7 @@
 require 'faraday'
 require 'faraday-sunset'
+require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 
 module We
   module Call
@@ -8,14 +10,17 @@ module We
 
       OPEN_TIMEOUT = 2
 
+      # We use typhoeus instead of default NetHTTP so we can control how many retries are made
+      # https://github.com/lostisland/faraday/issues/612
+      DEFAULT_ADAPTER_CLASS = Faraday::Adapter::Typhoeus
+      DEFAULT_ADAPTER = :typhoeus
+
       class MissingApp < ArgumentError; end
       class MissingEnv < ArgumentError; end
       class MissingTimeout < ArgumentError; end
       class MissingOpenTimeout < ArgumentError; end
 
-      parent_builder_class = defined?(Faraday::RackBuilder) ? Faraday::RackBuilder : Faraday::Builder
-
-      QueryableBuilder = Class.new(parent_builder_class) do
+      QueryableBuilder = Class.new(Faraday::RackBuilder) do
         def adapter?
           @has_adapter || false
         end
@@ -49,20 +54,25 @@ module We
       def create
         builder = QueryableBuilder.new(&Proc.new { |_| })
 
-        Faraday.new(url: host, builder: builder) do |faraday|
-          faraday.headers['User-Agent'] = app
-          faraday.headers[config.app_name_header] = app
-          faraday.headers[config.app_env_header] = env
-          faraday.options[:timeout] = timeout
-          faraday.options[:open_timeout] = open_timeout
+        headers = {
+          'User-Agent'            => app,
+          config.app_name_header  => app,
+          config.app_env_header   => env,
+        }
 
+        request = {
+          timeout:      timeout,
+          open_timeout: open_timeout
+        }
+
+        Faraday.new(host, builder: builder, headers: headers, request: request) do |faraday|
           if config.detect_deprecations
             faraday.response :sunset, setup_sunset_middleware(faraday)
           end
 
           yield faraday if block_given?
 
-          faraday.adapter Faraday.default_adapter unless faraday.builder.adapter?
+          faraday.adapter DEFAULT_ADAPTER unless faraday.builder.adapter?
         end
       end
 

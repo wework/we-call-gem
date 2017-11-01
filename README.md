@@ -157,7 +157,6 @@ _For now this gem requires Rails 4.2+ due to some ActiveController functionality
 - [ ] Support adding href to Deprecate to make a `Link` with rel=sunset as per Sunset RFC draft 03
 - [ ] Remove Rails as a dependency (soft requirement on `ActiveSupport::Deprecated` is fine)
 - [x] Split DetectDeprecations into standalone [faraday-sunset] gem
-- [ ] Pass Trace IDs along
 - [ ] Work on sane defaults for retries and error raising
 
 [faraday-sunset]: https://github.com/philsturgeon/faraday-sunset
@@ -167,12 +166,12 @@ _For now this gem requires Rails 4.2+ due to some ActiveController functionality
 To run tests and modify locally, you'll want to `bundle install` in this directory.
 
 ```
-bundle exec rspec
+bundle exec appraisal rspec
 ```
 
 ## Development
 
-If you want to test this gem within an application, update your Gemfile to have something like this: `gem 'we-call', github: 'wework/we-call', branch: 'BRANCHNAME'` and set your local config: `bundle config --local local.we-call path/to/we-call`
+If you want to test this gem within an application, update your Gemfile to have something like this: `gem 'we-call', github: 'wework/we-call-gem', branch: 'BRANCHNAME'` and set your local config: `bundle config --local local.we-call path/to/we-call-gem`
 
 Simply revert the Gemfile change (updating the version as necessary!) and remove the config with `bundle config --delete local.we-call`.
 

@@ -119,19 +119,19 @@ RSpec.describe We::Call::Connection do
         end
 
         it 'should have the default adapter' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
+          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(described_class::DEFAULT_ADAPTER_CLASS, Faraday::Sunset)
         end
       end
 
       context 'when default adapter is specified' do
         subject do
           described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5) do |conn|
-            conn.adapter Faraday.default_adapter
+            conn.adapter described_class::DEFAULT_ADAPTER
           end
         end
 
-        it 'only has Faraday.default_adapter adapter handler' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttp, Faraday::Sunset)
+        it 'is not repeated adapter handler' do
+          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(described_class::DEFAULT_ADAPTER_CLASS, Faraday::Sunset)
         end
       end
 
