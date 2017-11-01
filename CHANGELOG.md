@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.6.0
+
+### Changed
+- Use typhoeus instead of NetHTTP for a [series of reasons]
+
+[typhoeus]: https://github.com/typhoeus/typhoeus
+[series of reasons]: https://github.com/wework/we-call-gem/pull/7
+
 ## v0.5.4
 
 ### Fixed
