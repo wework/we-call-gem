@@ -8,7 +8,9 @@ module We
     module Connection
       extend self
 
-      OPEN_TIMEOUT = 2
+      # If your network isn't stable enough to get a sign of life in 1s then you should look into that
+      # Or override this default on creating the connection.
+      OPEN_TIMEOUT = 1
 
       # We use typhoeus instead of default NetHTTP so we can control how many retries are made
       # https://github.com/lostisland/faraday/issues/612

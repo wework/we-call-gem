@@ -37,10 +37,10 @@ end
 As this is a Faraday wrapper, the only thing that will change from normal Faraday usage is initialization.
 
 ```ruby
-connection = We::Call::Connection.new(host: 'https://some-service.example.com/', timeout: 5)
+connection = We::Call::Connection.new(host: 'https://some-service.example.com/', timeout: 2)
 
 # or with a Faraday connection block
-connection = We::Call::Connection.new(host: 'https://some-service.example.com/', timeout: 5) do |conn|
+connection = We::Call::Connection.new(host: 'https://some-service.example.com/', timeout: 2) do |conn|
   conn.token_auth('abc123token')
   conn.headers['Foo'] = 'bar'
 end
@@ -61,7 +61,7 @@ connection = We::Call.configure do |config|
 end
 
 # Provided at initialization
-connection = We::Call::Connection.new(host: 'https://service-b.example.com/', app: 'Service A', timeout: 5)
+connection = We::Call::Connection.new(host: 'https://service-b.example.com/', app: 'Service A', timeout: 2)
 ```
 
 _Ofc services could lie about this, so do not use App Name for any sort of security. For that you need to use tokens assigned to applications. This is essentially just forcing a user agent._
@@ -75,7 +75,7 @@ connection = We::Call.configure do |config|
 end
 
 # Provided at initialization
-connection = We::Call::Connection.new(host: 'https://service-b.example.com/', env: 'staging', timeout: 5)
+connection = We::Call::Connection.new(host: 'https://service-b.example.com/', env: 'staging', timeout: 2)
 ```
 
 Not only is knowing the app name important, but knowing the env is necessary too. Sometimes people configure stuff wrong, and Service A (staging) will hit Service B (production) 😨.
@@ -90,12 +90,12 @@ The lower this number can be the better, as it reduces time web threads spend wa
 
 ```ruby
 # Provided at initialization
-connection = We::Call::Connection.new(host: 'https://service-b.example.com/', timeout: 5)
+connection = We::Call::Connection.new(host: 'https://service-b.example.com/', timeout: 2)
 ```
 
 Timeouts can only be provided at initialization of a connection, as they should be different for each service. This is down to the sad reality that some internal services are more performant than others, and various third-parties will have different SLAs.
 
-As well as `timeout: num_seconds` which can set the entire open/read (essentially the total response time of the server), another optional argument exists for `open_timeout: numseconds`. This is how long We::Call should spend waiting for a vague sign of life from the server, which by default is 2.
+As well as `timeout: num_seconds` which can set the entire open/read (essentially the total response time of the server), another optional argument exists for `open_timeout: numseconds`. This is how long We::Call should spend waiting for a vague sign of life from the server, which by default is 1.
 
 ### Deprecations
 
