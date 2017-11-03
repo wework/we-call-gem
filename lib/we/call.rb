@@ -1,3 +1,7 @@
+require 'faraday'
+require 'faraday-sunset'
+require 'typhoeus'
+
 module We
   module Call
     autoload :Annotations,   "we/call/annotations"

@@ -1,6 +1,3 @@
-require 'faraday'
-require 'faraday-sunset'
-require 'typhoeus'
 require 'typhoeus/adapters/faraday'
 
 module We
