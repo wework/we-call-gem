@@ -12,9 +12,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Reduced open timeout default to 1 second
 
-### Changed
-- Reduced open timeout default to 1 second
-
 ## v0.6.0
 ### Changed
 - Use typhoeus instead of NetHTTP for a [series of reasons]
