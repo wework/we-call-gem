@@ -5,8 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## v0.6.0
+## v0.6.1
+### Fixed
+- Required typhoeus in We::Call instead of connection, which loads it early enough for NewRelic tracing to kick in if you use that
 
+### Changed
+- Reduced open timeout default to 1 second
+
+### Changed
+- Reduced open timeout default to 1 second
+
+## v0.6.0
 ### Changed
 - Use typhoeus instead of NetHTTP for a [series of reasons]
 
@@ -14,7 +23,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [series of reasons]: https://github.com/wework/we-call-gem/pull/7
 
 ## v0.5.4
-
 ### Fixed
 - Connection checks `Rails.env` instead of `ENV['RAILS_ENV']` as most people dont have RAILS_ENV in their `.env` file
 
