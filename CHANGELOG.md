@@ -5,43 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## v0.6.1
+## [v0.7.0] - 2017-10-07
+### Breaking Changes
+- Removed `We::Call::Deprecated` and `We::Call::Annotations`. Deprecation logic is now handled by [rails-sunset] instead. I fully understand the irony of removing deprecation logic without deprecation
+
+[rails-sunset]: https://github.com/wework/rails-sunset
+
+## [v0.6.1] - 2017-10-03
 ### Fixed
 - Required typhoeus in We::Call instead of connection, which loads it early enough for NewRelic tracing to kick in if you use that
 
 ### Changed
 - Reduced open timeout default to 1 second
 
-## v0.6.0
+## [v0.6.0]
 ### Changed
 - Use typhoeus instead of NetHTTP for a [series of reasons]
 
 [typhoeus]: https://github.com/typhoeus/typhoeus
 [series of reasons]: https://github.com/wework/we-call-gem/pull/7
 
-## v0.5.4
+## [v0.5.4]
 ### Fixed
 - Connection checks `Rails.env` instead of `ENV['RAILS_ENV']` as most people dont have RAILS_ENV in their `.env` file
 
-## v0.5.3
+## [v0.5.3]
 
 ### Fixed
 - Deprecations were calling a private method and failing
 
-## v0.5.2
+## [v0.5.2]
 
 ### Fixed
 - Made Annotations require "ruby_decorators"
 
-## v0.5.1
+## [v0.5.1]
 
 ### Changed
 - Switched `config.detect_deprecations` from bool to expect `:active_support` or logger instance
 - Moved `We::Call::Middleware::Client::DetectDeprecations` into its own [faraday-sunset] gem (no BC breaks)
 
-[faraday-sunset]: https://github.com/philsturgeon/faraday-sunset
+[faraday-sunset]: https://github.com/wework/faraday-sunset
 
-## v0.5.0
+## [v0.5.0]
 
 ### Added
 - Configurable `We::Call.configure` which accepts a config block
@@ -57,17 +63,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Switched from manually requiring to using module autoload to reduce memory footprint
 
-## v0.4.2
+## [v0.4.2]
 
 ### Fixed
 - Manually setting `conn.adapter` would result in double adapters (two requests made!)
 
-## v0.4.1
+## [v0.4.1]
 
 ### Fixed
 - Improved support for Faraday 0.8 - 0.9.
 
-## v0.4.0
+## [v0.4.0]
 
 ### Added
 - `We::Call::Connection.new` requires `timeout: 1` where 1 is seconds.
