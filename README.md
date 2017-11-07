@@ -97,32 +97,6 @@ Timeouts can only be provided at initialization of a connection, as they should 
 
 As well as `timeout: num_seconds` which can set the entire open/read (essentially the total response time of the server), another optional argument exists for `open_timeout: numseconds`. This is how long We::Call should spend waiting for a vague sign of life from the server, which by default is 1.
 
-### Deprecations
-
-We::Call helps with a bunch of things, such as the logic to go on client and server side to handle deprecations, both logging calls made to this servies deprecated endpoints, and alerting services when they make calls to deprecated endpoints.
-
-Currently this is done using a simple annotation.
-
-```ruby
-# app/controllers/api_controller.rb
-
-extend We::Call::Annotations
-```
-
-Then a controller can be annotated as such:
-
-```ruby
-# app/controllers/foo_controller.rb
-
-class FooController < ApiController
-  +We::Call::Deprecated.new(date: '2018-01-07 00:00:00 EDT')
-  def show
-    # ...
-  end
-end
-```
-
-It's as simple as that. This annotation will inject a [Sunset header](https://tools.ietf.org/html/draft-wilde-sunset-header-03) and everyone will know its being deprecated.
 
 ## Middleware
 
@@ -130,7 +104,9 @@ It's as simple as that. This annotation will inject a [Sunset header](https://to
 
 **DetectDeprecations**
 
-Automatically enabled, this Faraday middleware will watch for the [Sunset header](https://tools.ietf.org/html/draft-wilde-sunset-header-03) and send warning to `ActiveSupport::Deprecation` if enabled, or to whatever is in `ENV['rake.logger']`.
+Automatically enabled, the faraday-sunset middleware will watch for the [Sunset header](https://tools.ietf.org/html/draft-wilde-sunset-header-03) and send warning to `ActiveSupport::Deprecation` if enabled, or to whatever is in `ENV['rake.logger']`.
+
+[faraday-sunset]: https://github.com/wework/faraday-sunset
 
 ### Server
 
@@ -147,19 +123,14 @@ Easy! Check your logs for `user_agent=service-name; app_name=service-name;` The 
 ## Requirements
 
 - **Ruby:** v2.2 - v2.4
-- **Rails:** v4.2 - v5.1
 - **Faraday:** v0.9 - v0.13
 
-_For now this gem requires Rails 4.2+ due to some ActiveController functionality we are taking advantage of. Future work will include making this purely rack based._
 
 ## TODO
 
-- [ ] Support adding href to Deprecate to make a `Link` with rel=sunset as per Sunset RFC draft 03
-- [ ] Remove Rails as a dependency (soft requirement on `ActiveSupport::Deprecated` is fine)
 - [x] Split DetectDeprecations into standalone [faraday-sunset] gem
 - [ ] Work on sane defaults for retries and error raising
 
-[faraday-sunset]: https://github.com/philsturgeon/faraday-sunset
 
 ## Testing
 
