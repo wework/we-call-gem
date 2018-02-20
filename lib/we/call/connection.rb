@@ -21,12 +21,16 @@ module We
 
       QueryableBuilder = Class.new(Faraday::RackBuilder) do
         def adapter?
-          @has_adapter || false
+          @adapter || false
         end
 
         def adapter(key, *args, &block)
           super
-          @has_adapter = true
+          @adapter = key
+        end
+
+        def get_adapter
+          @adapter || DEFAULT_ADAPTER
         end
       end
 
@@ -71,6 +75,10 @@ module We
 
           yield faraday if block_given?
 
+          unless adapter_handles_gzip?(faraday.builder.get_adapter)
+            faraday.use :gzip
+          end
+
           faraday.adapter DEFAULT_ADAPTER unless faraday.builder.adapter?
         end
       end
@@ -93,6 +101,12 @@ module We
 
       def raise_missing_open_timeout!
         raise MissingOpenTimeout, 'open_timeout must be set, and defaults to 1 second. This is the time until a connection is established with another server, and after 1 sec it\'s probably not there.'
+      end
+
+      # @return [Boolean] Does the adapter handle gzip automatically or not
+      # https://github.com/lostisland/faraday_middleware/blob/master/lib/faraday_middleware/gzip.rb#L9
+      def adapter_handles_gzip?(adapter)
+        [:em_http, :net_http, :net_http_persistent].include?(adapter)
       end
 
       def setup_sunset_middleware(faraday)

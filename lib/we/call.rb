@@ -1,4 +1,5 @@
 require 'faraday'
+require 'faraday_middleware'
 require 'faraday-sunset'
 require 'typhoeus'
 
