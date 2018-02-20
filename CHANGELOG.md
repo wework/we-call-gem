@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.7.1] - 2018-02-20
+### Fixed
+- Call the gzip middleware to handle gzipped responses, which have been broken since v0.7 for typhoeus users
+
 ## [v0.7.0] - 2017-10-07
 ### Breaking Changes
 - Removed `We::Call::Deprecated` and `We::Call::Annotations`. Deprecation logic is now handled by [rails-sunset] instead. I fully understand the irony of removing deprecation logic without deprecation
