@@ -1,6 +1,8 @@
 require "spec_helper"
 
 RSpec.describe We::Call::Connection do
+  DEFAULT_MIDDLEWARES = [FaradayMiddleware::Gzip, Faraday::Sunset]
+
   describe '#initialize' do
     context 'when host is missing' do
       it 'raises ArgumentError' do
@@ -113,13 +115,17 @@ RSpec.describe We::Call::Connection do
     end
 
     context 'adapter configuration' do
+      let(:handlers) { subject.builder.handlers.map(&:klass) }
+
       context 'when no adapter is specified' do
         subject do
           described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5)
         end
 
         it 'should have the default adapter' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(described_class::DEFAULT_ADAPTER_CLASS, Faraday::Sunset)
+          expect(handlers).to match_array(
+            [described_class::DEFAULT_ADAPTER_CLASS].concat(DEFAULT_MIDDLEWARES)
+          )
         end
       end
 
@@ -131,7 +137,25 @@ RSpec.describe We::Call::Connection do
         end
 
         it 'is not repeated adapter handler' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(described_class::DEFAULT_ADAPTER_CLASS, Faraday::Sunset)
+          expect(handlers).to match_array(
+            [described_class::DEFAULT_ADAPTER_CLASS].concat(DEFAULT_MIDDLEWARES)
+          )
+        end
+      end
+
+      context 'when :net_http adapter is specified' do
+        subject do
+          described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5) do |conn|
+            conn.adapter :net_http
+          end
+        end
+
+        it 'specifies NetHttp adapter handler' do
+          expect(handlers).to include(Faraday::Adapter::NetHttp)
+        end
+
+        it 'skips FaradayMiddleware::Gzip' do
+          expect(handlers).to_not include(FaradayMiddleware::Gzip)
         end
       end
 
@@ -142,8 +166,12 @@ RSpec.describe We::Call::Connection do
           end
         end
 
-        it 'only has NetHttpPersistent adapter handler' do
-          expect(subject.builder.handlers.map(&:klass)).to contain_exactly(Faraday::Adapter::NetHttpPersistent, Faraday::Sunset)
+        it 'specifies NetHttpPersistent adapter handler' do
+          expect(handlers).to include(Faraday::Adapter::NetHttpPersistent)
+        end
+
+        it 'skips FaradayMiddleware::Gzip' do
+          expect(handlers).to_not include(FaradayMiddleware::Gzip)
         end
       end
 
@@ -152,6 +180,8 @@ RSpec.describe We::Call::Connection do
 
         before do
           allow(We::Call::Connection::QueryableBuilder).to receive(:new) { builder_spy }
+          allow(builder_spy).to receive(:use)
+          allow(builder_spy).to receive(:response)
         end
 
         context 'and config.detect_deprecations is left to default' do
