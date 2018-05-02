@@ -122,8 +122,8 @@ Easy! Check your logs for `user_agent=service-name; app_name=service-name;` The 
 
 ## Requirements
 
-- **Ruby:** v2.2 - v2.4
 - **Faraday:** v0.9 - v0.13
+- **Ruby:** v2.2 - v2.5
 
 
 ## TODO
