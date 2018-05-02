@@ -1,3 +1,11 @@
+appraise "faraday-0.15" do
+  gem "faraday", "~> 0.13.0"
+end
+
+appraise "faraday-0.14" do
+  gem "faraday", "~> 0.13.0"
+end
+
 appraise "faraday-0.13" do
   gem "faraday", "~> 0.13.0"
 end
@@ -14,8 +22,8 @@ appraise "faraday-0.10" do
   gem "faraday", "~> 0.10.0"
 end
 
-appraise "faraday-0.9" do
-  gem "faraday", "~> 0.9.0"
+appraise "rails-5.2" do
+  gem "rails", "~> 5.2.0"
 end
 
 appraise "rails-5.1" do

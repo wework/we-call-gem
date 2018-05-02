@@ -122,9 +122,10 @@ Easy! Check your logs for `user_agent=service-name; app_name=service-name;` The 
 
 ## Requirements
 
-- **Faraday:** v0.9 - v0.13
 - **Ruby:** v2.2 - v2.5
+- **Faraday:** v0.10 - v0.15
 
+_**Note:** Other versions of Faraday may work, but we can't test against all of them forever._
 
 ## TODO
 
