@@ -1,5 +1,10 @@
 require 'typhoeus/adapters/faraday'
 
+require 'opentracing'
+require 'faraday/tracer'
+require 'rack/tracer'
+require 'jaeger/client'
+
 module We
   module Call
     module Connection
@@ -40,18 +45,20 @@ module We
       # @param [String] app
       # @param [String] env
       # @yieldparam [Faraday::Connection] Faraday connection object is yielded to a block
-      def new(host:, timeout: nil, open_timeout: OPEN_TIMEOUT, app: guess_app, env: guess_env, &block)
+      def new(host:, timeout: nil, open_timeout: OPEN_TIMEOUT, app: guess_app, env: guess_env, active_span: guess_span, &block)
         @host = host
         @app = app or raise_missing_app!
         @env = env or raise_missing_env!
         @timeout = timeout or raise_missing_timeout!
         @open_timeout = open_timeout or raise_missing_open_timeout!
+        @active_span = active_span
+
         create(&block)
       end
 
       private
 
-      attr_reader :app, :env, :host, :timeout, :open_timeout
+      attr_reader :app, :env, :host, :timeout, :open_timeout, :active_span
 
       # @return [Faraday::Connection] Preconfigured Faraday Connection object, for hitting get, post, etc.
       def create
@@ -63,12 +70,14 @@ module We
           config.app_env_header   => env,
         }
 
-        request = {
+        options = {
           timeout:      timeout,
           open_timeout: open_timeout
         }
 
-        Faraday.new(host, builder: builder, headers: headers, request: request) do |faraday|
+        Faraday.new(host, builder: builder, headers: headers, request: options) do |faraday|
+          faraday.use Faraday::Tracer, span: active_span
+
           if config.detect_deprecations
             faraday.response :sunset, setup_sunset_middleware(faraday)
           end
@@ -130,6 +139,11 @@ module We
       def guess_app
         return config.app_name if config.app_name
         ENV['APP_NAME'] || rails_app_name
+      end
+
+      def guess_span
+        return rails_app_env['rack.span'] if rails_app_env
+        nil
       end
 
       def rails_app_env
