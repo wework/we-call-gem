@@ -1,5 +1,9 @@
 require 'typhoeus/adapters/faraday'
 
+require 'opentracing'
+require 'faraday/tracer'
+require 'jaeger/client'
+
 module We
   module Call
     module Connection
@@ -46,6 +50,9 @@ module We
         @env = env or raise_missing_env!
         @timeout = timeout or raise_missing_timeout!
         @open_timeout = open_timeout or raise_missing_open_timeout!
+
+        OpenTracing.global_tracer = jaeger_client
+
         create(&block)
       end
 
@@ -69,6 +76,8 @@ module We
         }
 
         Faraday.new(host, builder: builder, headers: headers, request: request) do |faraday|
+          faraday.use Faraday::Tracer, span: ENV['rack.span']
+
           if config.detect_deprecations
             faraday.response :sunset, setup_sunset_middleware(faraday)
           end
@@ -140,6 +149,16 @@ module We
         if (defined? ::Rails) && !::Rails.application.nil?
           ::Rails.application.class.parent_name.underscore.dasherize
         end
+      end
+
+      def jaeger_client
+        Jaeger::Client.build(
+          host: 'localhost',
+          port: 6831,
+          # host: ENV['WE_CALL_JAEGER_HOST'] || 'localhost', 
+          # port: (ENV['WE_CALL_JAEGER_PORT'] || 6831).to_i,
+          service_name: app
+        )
       end
     end
   end

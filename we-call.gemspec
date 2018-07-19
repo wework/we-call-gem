@@ -24,6 +24,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday", ">= 0.9.0", "< 1"
   spec.add_dependency "faraday_middleware", '~> 0.10'
   spec.add_dependency "faraday-sunset", "~> 0.1.0"
+  spec.add_dependency 'faraday-tracer', "~> 0.6.0"
+  spec.add_dependency 'jaeger-client'
 
   spec.add_development_dependency "appraisal", "~> 2.0"
   spec.add_development_dependency "coveralls", '~> 0.7'
