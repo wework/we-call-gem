@@ -110,14 +110,14 @@ module We
       end
 
       def setup_sunset_middleware(faraday)
-        # In v0.5.0 this was a bool switch, now it takes :active_support or an instance of a Logger
-        if config.detect_deprecations == true || config.detect_deprecations == :active_support
-          return { active_support: true }
-
+        options = { rollbar: :auto }
+        if config.detect_deprecations == :active_support
+          options = options.merge({ active_support: true })
         # Pass something that might be a logger or anything with a warn method
         elsif config.detect_deprecations.respond_to?(:warn)
-          return { logger: config.detect_deprecations }
+          options = options.merge({ logger: config.detect_deprecations })
         end
+        options
       end
 
       # @return [String] Environment (usually 'development', 'staging', 'production', etc.)

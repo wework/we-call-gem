@@ -189,7 +189,8 @@ RSpec.describe We::Call::Connection do
             subject
             expect(builder_spy).to have_received(:response).with(
               :sunset,
-              active_support: true
+              active_support: true,
+              rollbar: :auto
             )
           end
         end
@@ -210,7 +211,8 @@ RSpec.describe We::Call::Connection do
             subject
             expect(builder_spy).to have_received(:response).with(
               :sunset,
-              logger: logger
+              logger: logger,
+              rollbar: :auto
             )
           end
         end
