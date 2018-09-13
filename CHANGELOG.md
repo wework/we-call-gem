@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.8.0] - 2018-08-27
+### Added
+- Support for Ruby v2.5
+- Support for Rails v5.2
+- Support for Faraday v0.14 and v0.15
+- Automatically reports deprecations to Rollbar if [rollbar] gem exists ([#17])
+
+[rollbar]: https://github.com/rollbar/rollbar-gem
+[#17]: https://github.com/wework/we-call-gem/pull/17
+
+### Breaking
+- Dropped support for Faraday v0.9 (may still work but its no longer tested or recommended)
+
 ## [v0.7.1] - 2018-02-20
 ### Fixed
 - Call the gzip middleware to handle gzipped responses, which have been broken since v0.7 for typhoeus users
