@@ -15,6 +15,7 @@ module We
     end
 
     def self.configuration
+      # potentially add in tracer here as param
       @configuration ||= Configuration.new
     end
 

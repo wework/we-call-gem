@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe We::Call::Connection do
-  DEFAULT_MIDDLEWARES = [FaradayMiddleware::Gzip, Faraday::Sunset]
+  DEFAULT_MIDDLEWARES = [FaradayMiddleware::Gzip, Faraday::Sunset, Faraday::Tracer]
 
   describe '#initialize' do
     context 'when host is missing' do
@@ -99,6 +99,32 @@ RSpec.describe We::Call::Connection do
 
       it 'contains X-App-Name header' do
         expect(subject.headers['X-App-Name']).to eql('test-app')
+      end
+    end
+
+    context 'when active_span needs to be guessed' do
+      subject { described_class.new(host: 'http://foo.com', app: 'foo', env: env, timeout: 5, open_timeout: 10) }
+
+      context 'rack.span is present' do
+        let(:env) do
+          {
+            'test' => {
+              'rack.span' => 'some_span'
+            }
+          }
+        end
+
+        it 'contains X-App-Name header' do
+          expect(subject.headers['X-App-Env']['test']['rack.span']).to eq('some_span')
+        end
+      end
+
+      context 'rack.span is not present' do
+        let(:env) { 'test' }
+
+        it 'sets active_span to nil if rack.span is not present' do
+          expect(subject.headers['X-App-Env']['test']['rack.span']).to be_nil
+        end
       end
     end
 
