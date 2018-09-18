@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.9.0] - 2018-09-18
+### Added
+- Automatically reports deprecations to ActiveSupport if [activesupport] gem exists ([#21])
+- Defaults detect_deprecations to nil instead of true
+
+[activesupport]: https://github.com/rails/rails/tree/master/activesupport
+[#21]: https://github.com/wework/we-call-gem/pull/21
+
 ## [v0.8.0] - 2018-08-27
 ### Added
 - Support for Ruby v2.5
