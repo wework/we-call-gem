@@ -118,6 +118,11 @@ RSpec.describe We::Call::Connection do
       let(:handlers) { subject.builder.handlers.map(&:klass) }
 
       context 'when no adapter is specified' do
+
+        before do
+          We::Call::configuration.detect_deprecations = true
+        end
+
         subject do
           described_class.new(host: 'http://pokeapi.co/api/v2/', app: 'pokedex', env: 'test', timeout: 5)
         end
@@ -179,17 +184,18 @@ RSpec.describe We::Call::Connection do
         let(:builder_spy) { spy('QueryableBuilder') }
 
         before do
+          We::Call::configuration.detect_deprecations = true
           allow(We::Call::Connection::QueryableBuilder).to receive(:new) { builder_spy }
           allow(builder_spy).to receive(:use)
           allow(builder_spy).to receive(:response)
         end
 
         context 'and config.detect_deprecations is left to default' do
-          it 'register middleware with { active_support: true }' do
+          it 'register middleware with { active_support: :auto }' do
             subject
             expect(builder_spy).to have_received(:response).with(
               :sunset,
-              active_support: true,
+              active_support: :auto,
               rollbar: :auto
             )
           end
@@ -212,7 +218,8 @@ RSpec.describe We::Call::Connection do
             expect(builder_spy).to have_received(:response).with(
               :sunset,
               logger: logger,
-              rollbar: :auto
+              rollbar: :auto,
+              active_support: :auto
             )
           end
         end

@@ -110,11 +110,9 @@ module We
       end
 
       def setup_sunset_middleware(faraday)
-        options = { rollbar: :auto }
-        if config.detect_deprecations == :active_support
-          options = options.merge({ active_support: true })
+        options = { rollbar: :auto, active_support: :auto }
         # Pass something that might be a logger or anything with a warn method
-        elsif config.detect_deprecations.respond_to?(:warn)
+        if config.detect_deprecations.respond_to?(:warn)
           options = options.merge({ logger: config.detect_deprecations })
         end
         options
