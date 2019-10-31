@@ -32,6 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rails", ">= 4.2"
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "simplecov", '~> 0.15'
-  spec.add_development_dependency "hashie", "~> 3.5"
+  spec.add_development_dependency "hashie", "~> 4.0"
   spec.add_development_dependency "vcr", '~> 4.0'
 end
