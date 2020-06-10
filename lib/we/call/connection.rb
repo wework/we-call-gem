@@ -136,7 +136,7 @@ module We
 
       def rails_app_name
         if (defined? ::Rails) && !::Rails.application.nil?
-          ::Rails.application.class.parent_name.underscore.dasherize
+          ::Rails.application.class.module_parent_name.underscore.dasherize
         end
       end
     end
