@@ -14,6 +14,12 @@ module We
       DEFAULT_ADAPTER_CLASS = Faraday::Adapter::Typhoeus
       DEFAULT_ADAPTER = :typhoeus
 
+      DEFAULT_RETRY_OPTIONS = {
+        max: 3,
+        interval: 1,
+        exceptions: [Faraday::ConnectionFailed, Faraday::TimeoutError]
+      }
+
       class MissingApp < ArgumentError; end
       class MissingEnv < ArgumentError; end
       class MissingTimeout < ArgumentError; end
@@ -72,6 +78,9 @@ module We
           if config.detect_deprecations
             faraday.response :sunset, setup_sunset_middleware(faraday)
           end
+          if config.retry
+            faraday.request :retry, fetch_retry_options
+          end
 
           yield faraday if block_given?
 
@@ -116,6 +125,16 @@ module We
           options = options.merge({ logger: config.detect_deprecations })
         end
         options
+      end
+
+      def fetch_retry_options
+        DEFAULT_RETRY_OPTIONS.merge(config.retry_options) do |key, default_val, new_val|
+          if key == :exceptions
+            default_val + Array(new_val)
+          else
+            new_val
+          end
+        end
       end
 
       # @return [String] Environment (usually 'development', 'staging', 'production', etc.)

@@ -102,6 +102,36 @@ As well as `timeout: num_seconds` which can set the entire open/read (essentiall
 
 ### Client
 
+**Retry**
+
+Automatically enabled, the retry middleware will retry the request in case of network errors. By default, the middleware will retry up to 3 times, waiting 1 second between the retries.
+
+Disable the middleware:
+
+```ruby
+We::Call.configure do |config|
+  config.retry = false
+end
+```
+
+Adjust the middleware:
+
+```ruby
+We::Call.configure do |config|
+  config.retry_options = { interval: 0.5 }
+end
+```
+
+The gem smartly merges the options passed, so you can specify your own list of exceptions without being afraid to override the default ones:
+
+```ruby
+We::Call.configure do |config|
+  config.retry_options = { exceptions: [Faraday::ResourceNotFound] }
+end
+```
+
+Check [Faraday's Retry Docs](https://github.com/lostisland/faraday/blob/master/docs/middleware/request/retry.md) for a list of available options.
+
 **DetectDeprecations**
 
 Automatically enabled, the faraday-sunset middleware will watch for the [Sunset header](https://tools.ietf.org/html/draft-wilde-sunset-header-03) and send warning to `ActiveSupport::Deprecation` if enabled, or to whatever is in `ENV['rake.logger']`.
