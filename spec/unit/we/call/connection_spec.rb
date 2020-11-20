@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe We::Call::Connection do
-  DEFAULT_MIDDLEWARES = [FaradayMiddleware::Gzip, Faraday::Sunset]
+  DEFAULT_MIDDLEWARES = [FaradayMiddleware::Gzip, Faraday::Sunset, Faraday::Request::Retry]
 
   describe '#initialize' do
     context 'when host is missing' do
@@ -221,6 +221,79 @@ RSpec.describe We::Call::Connection do
               rollbar: :auto,
               active_support: :auto
             )
+          end
+        end
+      end
+
+      context 'when retry is disabled' do
+        before do
+          We::Call::configuration.retry = false
+        end
+
+        after do
+          We::Call::configuration.retry = true
+        end
+
+        it 'does not register retry middleware' do
+          expect(handlers).not_to include(Faraday::Request::Retry)
+        end
+      end
+
+      context 'when retry is enabled' do
+        let(:builder_spy) { spy('QueryableBuilder') }
+
+        before do
+          allow(We::Call::Connection::QueryableBuilder).to receive(:new) { builder_spy }
+          allow(builder_spy).to receive(:use)
+          allow(builder_spy).to receive(:response)
+        end
+
+        context 'when retry is used with default options' do
+          it 'registers the middleware with the correct options' do
+            subject
+            expect(builder_spy).to have_received(:request).with(
+              :retry,
+              We::Call::Connection::DEFAULT_RETRY_OPTIONS
+            )
+          end
+
+          context 'when options are overriden' do
+            let(:options) { { max: 5, backoff_factor: 2 } }
+
+            around do |example|
+              We::Call::configuration.retry_options = options
+              example.run
+              We::Call::configuration.retry_options = {}
+            end
+
+            it 'registers the middleware with the correct options' do
+              subject
+              expect(builder_spy).to have_received(:request).with(
+                :retry,
+                We::Call::Connection::DEFAULT_RETRY_OPTIONS.merge(options)
+              )
+            end
+          end
+
+          context 'when exceptions are overriden' do
+            let(:options) { { exceptions: [Faraday::ResourceNotFound] } }
+
+            around do |example|
+              We::Call::configuration.retry_options = options
+              example.run
+              We::Call::configuration.retry_options = {}
+            end
+
+            it 'registers the middleware with the correct options' do
+              expected_options = We::Call::Connection::DEFAULT_RETRY_OPTIONS.dup
+              expected_options[:exceptions] += options[:exceptions]
+
+              subject
+              expect(builder_spy).to have_received(:request).with(
+                :retry,
+                expected_options
+              )
+            end
           end
         end
       end

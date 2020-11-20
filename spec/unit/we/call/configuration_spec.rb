@@ -54,4 +54,18 @@ RSpec.describe We::Call::Configuration do
       expect(subject.detect_deprecations).to be true
     end
   end
+
+  describe "#retry" do
+    it "can set value" do
+      subject.retry = true
+      expect(subject.retry).to be true
+    end
+  end
+
+  describe "#retry_options=" do
+    it "can set value" do
+      subject.retry_options = { max: 5 }
+      expect(subject.retry_options).to eq({ max: 5 })
+    end
+  end
 end
