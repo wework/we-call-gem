@@ -1,0 +1,18 @@
+#!/bin/bash
+set -eox pipefail
+
+mkdir -p ~/.gem
+echo $RUBYGEMS_APIKEY > ~/.gem/credentials
+chmod 0600 ~/.gem/credentials
+
+VERSION_FILE="lib/we/call/version.rb"
+if [[ -n $CIRCLE_TAG ]]; then
+  # Determine the version from the tag; remove the leading v "v3.3.0" -> "3.3.0"
+  VERSION=$(echo "${CIRCLE_TAG}" | sed 's/^v//')
+  # Replace the version for the gemspec with the tag version
+  sed -i.bak -E "s/VERSION = .*/VERSION = '$VERSION'/" $VERSION_FILE
+fi
+
+gem build *.gemspec
+
+gem push *.gem

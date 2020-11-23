@@ -1,23 +1,43 @@
 version: 2.1
-orbs:
-  ruby: circleci/ruby@1.1.2
+
+x-shared: &x-shared
+  docker:
+    - image: circleci/ruby:2.6.3-stretch-node
 
 jobs:
   build:
-    docker:
-      - image: circleci/ruby:2.6.3-stretch-node
-    executor: ruby/default
+    <<: *x-shared
     steps:
       - checkout
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/install-deps:
-          with-cache: false
-          bundler-version: '1.17'
+          name: Build
+          command: ./script/cibuild
+      - persist_to_workspace:
+          root: .
+          paths: .
+  publish-gem:
+    <<: *x-shared
+    steps:
+      - attach_workspace:
+          at: ~/project # circleci default working directory
       - run:
-          name: Appraisal Install
-          command: bundle exec appraisal install
-      - run:
-          name: Appraisal Run Tests
-          command: bundle exec appraisal rspec
+          name: Publish Gem
+          command: .script/publish_gem
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)+/
+      - publish-gem:
+          context: org-global
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - main
+            tags:
+              only: /v[0-9]+(\.[0-9]+)+/
