@@ -29,9 +29,6 @@ workflows:
     jobs:
       - build:
           filters:
-            branches:
-              ignore:
-                - main
             tags:
               only: /v[0-9]+(\.[0-9]+)+/
       - publish-gem:
