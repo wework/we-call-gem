@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday-sunset", '~> 0.2'
 
   spec.add_development_dependency "appraisal", "~> 2.0"
-  spec.add_development_dependency "coveralls", '~> 0.7'
+  spec.add_development_dependency "coveralls_reborn", '~> 0.13'
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 12.0"
   spec.add_development_dependency "rails", ">= 4.2"
