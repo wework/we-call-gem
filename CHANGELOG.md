@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.9.1] - 2020-11-20
+### Added
+- Automatically retry on network errors([#31])
+
+[activesupport]: https://github.com/rails/rails/tree/master/activesupport
+[#31]: https://github.com/wework/we-call-gem/pull/31
+
 ## [v0.9.0] - 2018-09-18
 ### Added
 - Automatically reports deprecations to ActiveSupport if [activesupport] gem exists ([#21])
