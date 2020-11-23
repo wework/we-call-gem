@@ -13,7 +13,7 @@ jobs:
           name: Which bundler?
           command: bundle -v
       - ruby/install-deps:
-          with_cache: false
+          with-cache: false
       - run:
           name: Appraisal Install
           command: bundle exec appraisal install
