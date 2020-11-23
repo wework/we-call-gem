@@ -14,7 +14,7 @@ jobs:
           command: bundle -v
       - ruby/install-deps:
           with-cache: false
-          bundler-version: 1.17
+          bundler-version: '1.17'
       - run:
           name: Appraisal Install
           command: bundle exec appraisal install
