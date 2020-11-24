@@ -1,6 +1,6 @@
 # We::Call
 
-[![Build Status][travis-image]][travis-url]
+[![Build Status][ci-image]][ci-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 [![MIT License][license-image]][license-url]
 
@@ -187,8 +187,8 @@ Bug reports and pull requests are welcome on GitHub at [wework/we-call](https://
 [coveralls-image]:https://coveralls.io/repos/github/wework/we-call-gem/badge.svg?branch=master
 [coveralls-url]:https://coveralls.io/github/wework/we-call-gem?branch=main
 
-[travis-url]:https://travis-ci.org/wework/we-call-gem
-[travis-image]: https://travis-ci.org/wework/we-call-gem.svg?branch=main
+[ci-url]:https://app.circleci.com/pipelines/github/wework/we-call-gem
+[ci-image]:https://circleci.com/gh/wework/we-call-gem.svg?style=shield
 
 [license-url]: LICENSE
 [license-image]: http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
