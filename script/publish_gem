@@ -2,7 +2,7 @@
 set -eox pipefail
 
 mkdir -p ~/.gem
-echo $RUBYGEMS_APIKEY > ~/.gem/credentials
+echo :rubygems_api_key: $RUBYGEMS_APIKEY > ~/.gem/credentials
 chmod 0600 ~/.gem/credentials
 
 VERSION_FILE="lib/we/call/version.rb"
