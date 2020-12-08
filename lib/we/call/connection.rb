@@ -46,8 +46,9 @@ module We
       # @param [String] app
       # @param [String] env
       # @yieldparam [Faraday::Connection] Faraday connection object is yielded to a block
-      def new(host:, timeout: nil, open_timeout: OPEN_TIMEOUT, app: guess_app, env: guess_env, &block)
+      def new(host:, timeout: nil, open_timeout: OPEN_TIMEOUT, app: guess_app, env: guess_env, retry_options: {}, &block)
         @host = host
+        @retry_options = retry_options
         @app = app or raise_missing_app!
         @env = env or raise_missing_env!
         @timeout = timeout or raise_missing_timeout!
@@ -57,7 +58,7 @@ module We
 
       private
 
-      attr_reader :app, :env, :host, :timeout, :open_timeout
+      attr_reader :app, :env, :host, :timeout, :open_timeout, :retry_options
 
       # @return [Faraday::Connection] Preconfigured Faraday Connection object, for hitting get, post, etc.
       def create
@@ -78,7 +79,7 @@ module We
           if config.detect_deprecations
             faraday.response :sunset, setup_sunset_middleware(faraday)
           end
-          if config.retry
+          if should_retry?
             faraday.request :retry, fetch_retry_options
           end
 
@@ -127,8 +128,14 @@ module We
         options
       end
 
+      def should_retry?
+        retry_options.any? || config.retry
+      end
+
       def fetch_retry_options
-        DEFAULT_RETRY_OPTIONS.merge(config.retry_options) do |key, default_val, new_val|
+        client_options = retry_options.any? ? retry_options : config.retry_options
+
+        DEFAULT_RETRY_OPTIONS.merge(client_options) do |key, default_val, new_val|
           if key == :exceptions
             default_val + Array(new_val)
           else

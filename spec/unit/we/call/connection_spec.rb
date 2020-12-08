@@ -273,6 +273,19 @@ RSpec.describe We::Call::Connection do
                 We::Call::Connection::DEFAULT_RETRY_OPTIONS.merge(options)
               )
             end
+
+            context 'when retry options are set on a connection' do
+              let(:options) { { max: 3, backoff_factor: 2 } }
+              let(:valid_arguments) { super().merge(retry_options: options) }
+
+              it 'registers the middleware with the correct options' do
+                subject
+                expect(builder_spy).to have_received(:request).with(
+                  :retry,
+                  We::Call::Connection::DEFAULT_RETRY_OPTIONS.merge(options)
+                )
+              end
+            end
           end
 
           context 'when exceptions are overriden' do

@@ -112,6 +112,9 @@ Disable the middleware:
 We::Call.configure do |config|
   config.retry = false
 end
+
+# Provided at initialization
+connection = We::Call::Connection.new(retry_options: false)
 ```
 
 Adjust the middleware:
@@ -120,6 +123,9 @@ Adjust the middleware:
 We::Call.configure do |config|
   config.retry_options = { interval: 0.5 }
 end
+
+# Provided at initialization
+connection = We::Call::Connection.new(retry_options: { interval: 0.5 })
 ```
 
 The gem smartly merges the options passed, so you can specify your own list of exceptions without being afraid to override the default ones:
