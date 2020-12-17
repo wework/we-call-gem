@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.12.0] - 2020-12-17
+### Added
+- Bump version to fix incorrect tag
+
 ## [v0.11.0] - 2020-12-08
 ### Added
 - Allow to set retry options on a connection([#36])
