@@ -104,7 +104,17 @@ As well as `timeout: num_seconds` which can set the entire open/read (essentiall
 
 **Retry**
 
-Automatically enabled, the retry middleware will retry the request in case of network errors. By default, the middleware will retry up to 3 times, waiting 1 second between the retries.
+Automatically enabled, the retry middleware will retry the request in case of network errors. By default, the middleware will retry up to [3 times, with interval and backoff set to 1](https://github.com/wework/we-call-gem/blob/6f6870522a7ae057c8a103148a0a429431d3e1c8/lib/we/call/connection.rb#L17). Please be aware that adjusting the interval, backoff, or randomness factor will
+affect the total amount of time spent waiting for requests and retrying. For
+example:
+
+| Cumulative time spent in retries | First Retry | Second Retry | Third Retry |
+|---------| ---------------| :-------------:| :------------:|
+| timeout=2s, backoff=1, interval=1 | 2s + 1s ≈ 3s (+/- 0.5s) | 3s + 2s + 1s ≈ 5s (+/- 0.5s) | 5s + 2s + 1s ≈ 8s (+/- 0.5s)
+| timeout=5s, backoff=1, interval=1 | 5s + 1s ≈ 6s (+/- 0.5s) | 6s + 5s + 1s ≈ 12s (+/- 0.5s) | 12s + 5s + 1s ≈ 18s (+/- 0.5s)
+| timeout=2s, backoff=1.5, interval=1 | 2s + 1.5s ≈ 3.5s (+/- 0.5s) | 3.5s + 2s + 2.25s ≈ 7.75s (+/- 0.5s) | 7.75s + 2s + 3.375s ≈ 13.125s (+/- 0.5s)
+| timeout=5s, backoff=1.5, interval=1 | 5s + 1.5s ≈ 6.5s (+/- 0.5s) | 6.5s + 5s + 2.25s ≈ 13.75s (+/- 0.5s) | 13.75s + 5s + 3.375s ≈ 22.125s (+/- 0.5s)
+
 
 Disable the middleware:
 

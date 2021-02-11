@@ -17,7 +17,9 @@ module We
       DEFAULT_RETRY_OPTIONS = {
         max: 3,
         interval: 1,
-        exceptions: [Faraday::ConnectionFailed, Faraday::TimeoutError]
+        interval_randomness: 0.5,
+        # After upgrading Faraday to 1.0+, use Faraday::Request::Retry::DEFAULT_EXCEPTIONS
+        exceptions: [Faraday::ConnectionFailed, Errno::ETIMEDOUT, 'Timeout::Error', Faraday::TimeoutError]
       }
 
       class MissingApp < ArgumentError; end
