@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v0.12.1] - 2021-06-11
+### Fixed
+- Change the method to guess `rails_app_name` to work correctly across different Rails versions
+
 ## [v0.12.0] - 2020-12-17
 ### Added
 - Bump version to fix incorrect tag
