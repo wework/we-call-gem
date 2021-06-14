@@ -91,14 +91,25 @@ RSpec.describe We::Call::Connection do
     end
 
     context 'when app needs to be guessed' do
-      before { allow_any_instance_of(described_class).to receive(:rails_app_name) { 'test-app' } }
+      before do
+        allow(Rails).to receive(:application).and_return(app_class.new)
+      end
 
-      let(:valid_arguments_without_env) { valid_arguments.tap { |h| h.delete(:app) } }
+      let(:valid_arguments_without_app) { valid_arguments.tap { |h| h.delete(:app) } }
+      let(:app_class) { stub_const('WeCallTest::Application', Class.new) }
 
-      subject { described_class.new(**valid_arguments_without_env) }
+      subject { described_class.new(**valid_arguments_without_app) }
 
       it 'contains X-App-Name header' do
-        expect(subject.headers['X-App-Name']).to eql('test-app')
+        expect(subject.headers['X-App-Name']).to eql('we-call-test')
+      end
+
+      context 'when app has only one segment' do
+        let(:app_class) { stub_const('Test::Application', Class.new) }
+
+        it 'contains X-App-Name header' do
+          expect(subject.headers['X-App-Name']).to eql('test')
+        end
       end
     end
 
